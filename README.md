@@ -2,6 +2,10 @@
 
 A simple task management application that allows users to create, update, and delete tasks organized within directories.
 
+## Image:
+
+[//]: # (<img src="https://prnt.sc/bDLZTlVWfbiG" alt="home page">)
+![home page](https://prnt.sc/bDLZTlVWfbiG)
 ## Features
 
 - **Create:** Create new tasks with a title, description, directory, importance, completion status and target completion date.
@@ -61,3 +65,5 @@ To run the application on your local machine, follow these steps:
 - Backend: Django, Python
 - Database: SQLite (sqlite used to avoid database dependency )
 
+## File structure
+![File structure](https://prnt.sc/5Qhs-8Yb-s34)
