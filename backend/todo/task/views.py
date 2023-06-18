@@ -1,4 +1,5 @@
 from django.db.models import Q
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView, UpdateAPIView, ListAPIView, DestroyAPIView
 from rest_framework.response import Response
@@ -19,6 +20,7 @@ class DirectoryCreateAPiView(CreateAPIView):
     serializer_class = DirectorySerializer
     queryset = DirectoryModel.objects.all()
 
+    @swagger_auto_schema(tags=['Directory'])
     def post(self, request, *args, **kwargs):
         """
         Create a new directory.
@@ -56,6 +58,7 @@ class DirectoryUpdateAPiView(UpdateAPIView):
     serializer_class = DirectorySerializer
     queryset = DirectoryModel.objects.all()
 
+    @swagger_auto_schema(tags=['Directory'])
     def put(self, request, *args, **kwargs):
         """
         Update an existing directory.
@@ -107,18 +110,10 @@ class DirectoryListAPIView(ListAPIView):
     serializer_class = DirectorySerializer
     queryset = DirectoryModel.objects.all()
 
-    def get_queryset(self):
-        """
-        Retrieve the queryset for the list of directories.
-
-        Returns:
-        - Queryset of all directories.
-
-        Notes:
-        - User authentication is not applied in this implementation.
-
-        """
-        return self.queryset.all()
+    @swagger_auto_schema(tags=['Directory'])
+    def get(self, request, *args, **kwargs):
+        serializer = DirectorySerializer(self.queryset.all(), many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 class DirectoryDestroyAPIView(DestroyAPIView):
@@ -138,6 +133,7 @@ class DirectoryDestroyAPIView(DestroyAPIView):
     """
     queryset = DirectoryModel.objects.all()
 
+    @swagger_auto_schema(tags=['Directory'])
     def delete(self, request, *args, **kwargs):
         title = request.query_params.get('title', None)
         if not title:
@@ -174,6 +170,7 @@ class TaskCreateAPIView(CreateAPIView):
     serializer_class = TaskCreateSerializer
     queryset = TaskModel.objects.all()
 
+    @swagger_auto_schema(tags=['Tasks'])
     def post(self, request, *args, **kwargs):
         title = request.data.get('title', None)
         directory = request.data.get('directory', None)
@@ -213,15 +210,17 @@ class TaskListApiView(ListAPIView):
     serializer_class = TaskSerializer
     queryset = TaskModel.objects.all()
 
-    def get_queryset(self):
-        # self.queryset = self.queryset.filter(user=self.request.user)
-        return self.queryset.all()
+    @swagger_auto_schema(tags=['Tasks'])
+    def get(self, request, *args, **kwargs):
+        serializer = TaskSerializer(self.queryset.all(), many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 class TaskUpdateAPIView(UpdateAPIView):
     serializer_class = TaskCreateSerializer
     queryset = TaskModel.objects.all()
 
+    @swagger_auto_schema(tags=['Tasks'])
     def put(self, request, *args, **kwargs):
         """
     Update exiting task.
@@ -299,6 +298,7 @@ class ChangeTaskStatusAPIView(APIView):
     serializer_class = TaskSerializer
     queryset = TaskModel.objects.all()
 
+    @swagger_auto_schema(tags=['Tasks'])
     def get(self, request, *args, **kwargs):
         pk = kwargs.get('pk', None)
         status_data = request.query_params.get('status', None)
@@ -341,6 +341,7 @@ class TaskDeleteAPIView(DestroyAPIView):
         """
     queryset = TaskModel.objects.all()
 
+    @swagger_auto_schema(tags=['Tasks'])
     def delete(self, request, *args, **kwargs):
         pk = kwargs.get('pk', None)
         if not pk:

@@ -50,6 +50,8 @@ To run the application on your local machine, follow these steps:
   ```
 
   The backend server will be accessible at http://localhost:8000.
+- Swagger Link: http://localhost:8000/swagger/
+- Swagger doc: http://localhost:8000/redoc/
 
 4. Open your web browser and visit http://localhost:3000 to access the application.
 
@@ -58,3 +60,4 @@ To run the application on your local machine, follow these steps:
 - Frontend: React, JavaScript, HTML, CSS
 - Backend: Django, Python
 - Database: SQLite (sqlite used to avoid database dependency )
+
