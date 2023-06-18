@@ -3,7 +3,7 @@
 <br>
 2. Terminal: 1
     ```
-    git clone https://github.com
+    git clone https://github.com/plabondatta26/tasks-app-Pioneer-Alpha.git
     cd tasks-app-Pioneer-Alpha
     npm install
     npm start
@@ -21,10 +21,10 @@
 # Features
 Task  | Directory | Dynamic
 ------------- |-----|-------
-Create  | Create | [x]
-Update | Update | [x] 
-Delete | Delete | [x] 
-List | List | [x] 
-Mark Complete |     | [x] 
-Mark important |     | [x] 
-Filter |     | [x] 
+Create  | Create | &#9745;
+Update | Update | &#9745; 
+Delete | Delete | &#9745;
+List | List | &#9745;
+Mark Complete |   &#9746;  | &#9745;
+Mark important |   &#9746;  | &#9745; 
+Filter |  &#9746;   | &#9745; 
