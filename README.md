@@ -49,7 +49,7 @@ To run the application on your local machine, follow these steps:
 
 - Backend:
   ```
-  cd task-management-app/backend
+  cd task-management-app/backend/todo/
   python manage.py runserver localhost:8000
   ```
 
