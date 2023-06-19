@@ -49,7 +49,7 @@ class DirectoryCreateAPiView(CreateAPIView):
             directory_serializer.save()
             data = directory_serializer.data
             data["details"] = "Directory created"
-            return Response(data, status=status.HTTP_200_OK)
+            return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response({"details": "Failed to create directory"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -77,12 +77,15 @@ class DirectoryUpdateAPiView(UpdateAPIView):
 
         """
         title = request.data.get('title', None)
+        ex_title = request.data.get('ex_title', None)
         if not title:
             return Response({"details": "Title is required"}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
-        if DirectoryModel.objects.filter(title=title).count() > 1:
+        if DirectoryModel.objects.filter(title=title).count() == 1 and ex_title != title:
             return Response({"details": "Directory already exists"}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        directory_obj = DirectoryModel.objects.filter(title=title).first()
+        elif DirectoryModel.objects.filter(title=title).count() > 1:
+            return Response({"details": "Directory already exists"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        directory_obj = DirectoryModel.objects.filter(title=ex_title).first()
         if not directory_obj:
             return Response({"details": "Directory not found"}, status=status.HTTP_404_NOT_FOUND)
         directory_serializer = DirectorySerializer(data=request.data, instance=directory_obj)
