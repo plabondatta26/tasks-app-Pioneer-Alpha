@@ -33,7 +33,6 @@ const ModalCreateTask: React.FC<{
   onConfirm: (task: Task) => void;
 }> = ({ onClose, task, nameForm, onConfirm }) => {
   const directories = useAppSelector((state) => state.tasks.directories);
-console.log(directories, 'handling')
   const today: Date = new Date();
   let day: number = today.getDate();
   let month: number = today.getMonth() + 1;

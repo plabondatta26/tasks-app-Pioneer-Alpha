@@ -24,14 +24,18 @@ const ContentDirectories: React.FC<{ classActive: string }> = ({
       })
     };
     fetch('http://localhost:8000/api/create/deractory/', payload)
-    .then(response=>response.json())
-    .then(data=>{
-      const directoryDoesNotExist = directories.every(
-        (dir: string) => dir !== data.title
-      );
-  
-      if (directoryDoesNotExist) {
-        dispatch(tasksActions.createDirectory(data?.title));
+    .then(response=>{
+      return Promise.all([response.status, response.json()]);
+    })
+    .then(([code, data])=>{
+      if (code === 201) {
+        const directoryDoesNotExist = directories.every(
+          (dir: string) => dir !== data.title
+        );
+    
+        if (directoryDoesNotExist) {
+          dispatch(tasksActions.createDirectory(data?.title));
+        }
       }
       alert(data?.details);
     })

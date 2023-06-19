@@ -31,19 +31,23 @@ const BtnEditTask: React.FC<{ task: Task }> = ({ task }) => {
       })
     };
     fetch(`http://localhost:8000/api/edit/task/${task.id}/`, payload)
-    .then(response => response.json())
-    .then(data=> {
-      const updatedTask: Task = {
-        id: data?.id,
-        title: data?.title,
-        dir: data?.directory?.title,
-        description: data?.description,
-        date: data?.date,
-        important: data?.is_important,
-        completed: data?.is_completed
-      };
-      
-     dispatch(tasksActions.editTask(updatedTask));
+    .then(response => {
+      return Promise.all([response.status, response.json()]);
+    })
+    .then(([code, data])=> {
+      if (code === 200) {
+        const updatedTask: Task = {
+          id: data?.id,
+          title: data?.title,
+          dir: data?.directory?.title,
+          description: data?.description,
+          date: data?.date,
+          important: data?.is_important,
+          completed: data?.is_completed
+        };
+        
+       dispatch(tasksActions.editTask(updatedTask));
+      }
      alert(data.details);
   })
   .catch(err => {

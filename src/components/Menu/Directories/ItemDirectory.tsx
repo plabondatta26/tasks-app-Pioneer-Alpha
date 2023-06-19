@@ -25,9 +25,13 @@ const ItemDirectory: React.FC<{ dir: string; classActive: string }> = ({
 
   const deleteDirectoryHandler = () => {
     fetch(`http://localhost:8000/api/delete/deractory/?title=${dir}`, {method: 'DELETE'})
-    .then(response => response.json())
-    .then(data=> {
-      dispatch(tasksActions.deleteDirectory(dir));
+    .then(response => {
+      return Promise.all([response.status, response.json()]);
+    })
+    .then(([code, data])=> {
+      if (code === 200) {
+        dispatch(tasksActions.deleteDirectory(dir));
+      }
       alert(data?.details);
     })
     .catch(err => {
@@ -45,14 +49,18 @@ const ItemDirectory: React.FC<{ dir: string; classActive: string }> = ({
       })
     };
     fetch(`http://localhost:8000/api/edit/deractory/`, payload)
-    .then(response => response.json())
-    .then(data=> {
-      dispatch(
-      tasksActions.editDirectoryName({
-        previousDirName: dir,
-        newDirName: data?.title,
-      })
-    );
+    .then(response =>{
+      return Promise.all([response.status, response.json()]);
+    })
+    .then(([code, data])=> {
+      if (code === 200 && data){
+        dispatch(
+          tasksActions.editDirectoryName({
+            previousDirName: dir,
+            newDirName: data?.title,
+          })
+        );
+      }
     alert(data?.details);
   })
   .catch(err => {

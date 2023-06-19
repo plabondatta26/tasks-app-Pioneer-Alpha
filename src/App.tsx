@@ -32,18 +32,22 @@ const App: React.FC = () => {
       })
     };
     fetch('http://localhost:8000/api/create/task/', payload)
-    .then(response => response.json())
-    .then(data=> {
-      const updatedTask: Task = {
-        id: data?.id,
-        title: data?.title,
-        dir: data?.directory?.title,
-        description: data?.description,
-        date: data?.date,
-        important: data?.is_important,
-        completed: data?.is_completed
-      };
-      dispatch(tasksActions.addNewTask(updatedTask));
+    .then(response => {
+      return Promise.all([response.status, response.json()]);
+    })
+    .then(([code, data])=> {
+      if (code === 201){
+        const updatedTask: Task = {
+          id: data?.id,
+          title: data?.title,
+          dir: data?.directory?.title,
+          description: data?.description,
+          date: data?.date,
+          important: data?.is_important,
+          completed: data?.is_completed
+        };
+        dispatch(tasksActions.addNewTask(updatedTask));
+      }
       alert(data?.details)
   })
   .catch(err => {

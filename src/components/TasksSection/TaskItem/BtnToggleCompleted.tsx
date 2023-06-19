@@ -14,9 +14,13 @@ const BtnToggleCompleted: React.FC<{
   const toggleTaskCompleted = (id: string) => {
 
     fetch(`http://localhost:8000/api/edit/task/status/${id}/?is_completed=${taskCompleted}&status=completed`)
-    .then(response => response.json())
-    .then(data=> {
-      dispatch(tasksActions.toggleTaskCompleted(id));
+    .then(response =>{
+      return Promise.all([response.status, response.json()]);
+    })
+    .then(([code, data])=> {
+      if (code === 200) {
+        dispatch(tasksActions.toggleTaskCompleted(id));
+      }
       alert(data?.details);
     })
     .catch(err=> {

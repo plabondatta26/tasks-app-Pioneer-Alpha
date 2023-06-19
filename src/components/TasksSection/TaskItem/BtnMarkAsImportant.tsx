@@ -11,9 +11,13 @@ const BtnMarkAsImportant: React.FC<{
 
   const markAsImportantHandler = () => {
     fetch(`http://localhost:8000/api/edit/task/status/${taskId}?is_important=${taskImportant}&status=important`)
-    .then(response => response.json())
-    .then(data=> {
-      dispatch(tasksActions.markAsImportant(taskId));
+    .then(response => {
+      return Promise.all([response.status, response.json()]);
+    })
+    .then(([code, data])=> {
+      if (code === 200) {
+        dispatch(tasksActions.markAsImportant(taskId));
+      }
       alert(data?.details);
     })
     .catch(err=> {

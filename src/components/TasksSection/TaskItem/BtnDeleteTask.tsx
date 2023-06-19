@@ -10,9 +10,13 @@ const BtnDeleteTask: React.FC<{ taskId: string }> = ({ taskId }) => {
 
   const removeTaskHandler = () => {
     fetch(`http://localhost:8000/api/delete/task/${taskId}/`, { method: 'DELETE' })
-    .then(response => response.json())
-    .then(data=> {
-      dispatch(tasksActions.removeTask(taskId));
+    .then(response => {
+      return Promise.all([response.status, response.json()]);
+    })
+    .then(([code, data])=> {
+      if (code === 200) {
+        dispatch(tasksActions.removeTask(taskId));
+        }
       alert(data?.details)
     })
     .catch(err=> {

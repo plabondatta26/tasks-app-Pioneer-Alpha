@@ -46,7 +46,6 @@ async function fetchDirectories(): Promise<string[]> {
       }
     });
 
-    console.log(dirList, 'let dirList: string[] = [];');
     localStorage.setItem('directories', JSON.stringify(dirList));
     return dirList;
   } catch (error) {
@@ -101,7 +100,6 @@ const initialState: {
   tasks: JSON.parse(localStorage.getItem("tasks")!),
   directories: getSavedDirectories(),
 };
-console.log(initialState, 'initialState');
 
 const tasksSlice = createSlice({
   name: "tasks",
